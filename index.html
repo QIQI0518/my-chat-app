@@ -1,0 +1,94 @@
+<！doctype html>
+<超文本标记语言 朗="zh-CN">
+<头>
+    <元 字符集="UTF-8">
+    <元 姓名="视口" 内容="宽度=设备宽度，初始比例=1.0，最大比例=1.0，用户可缩放=否">
+    <标题>我的聊天页</标题>
+    <风格>
+* { 箱体尺寸: 边框框; 边缘: 0; 填充: 0; }
+身体{字体系列：-苹果-系统，BlinkMacSystemFont，"Segoe UI"，Roboto，无衬线；背景色：#f5f5f5；高度：100VH；显示：弯曲；挠曲方向：柱；溢出：隐藏的；}
+.聊天标题{填充：15px；文本对齐：中心；字体粗细：大胆的；背景：#FFF；下边框：1PX固体#e0e0e0；挠曲收缩：0；}
+.聊天窗口{弯曲：1；填充：15px；溢流y：自动；显示：弯曲；挠曲方向：柱；差距：10PX；}
+.消息{最大宽度：75%；填充：10px14px；边界半径：18px；字体大小：15px；线高：1.5；自动转换行：断字；}
+.消息.用门{自对：柔性端；背景色：#007bff；脸色：#fff；边界右下半径：4px；}
+.消息.网上机器人{自对齐：灵活启发；背景色：#FFF；颜色：#333；底部左半径边界：4px；箱形阴影：01px2px rg ba(0，0，0，0.1)；}
+.输入面积{显示：弯曲；填充：10PX；背景：#FFF；上边框：1PX固体#e0e0e0；差距：8px；挠曲收缩：0；}
+#msgInput{弯曲：1；填充：10px14px；边界：1PX固体#ddd；边界半径：20px；概要：没有一个；字体大小：15PX；}
+#sendBtn{填充：10px20px；边境：没有一个；背景色：#007bff；颜色：#FFF；边界半径：20px；字体大小：15px；光标：指针；}
+#sendBtn：活跃{不透明度：0.8；}
+    </风格>
+</头>
+<身体>
+    <div 班级="聊天标头">聊天窗口</div>
+    <div 班级="聊天窗口" 身份标识="聊天窗口"></div>
+    <div 班级="输入区域">
+        <输入 类型="文本" 身份标识="msgInput" 占位符="输入消息..." 自动完成="关闭">
+        <按钮 身份标识="sendBtn">发送</按钮>
+    </div>
+
+    <脚本>
+常量聊天窗口=文件.getElementById('聊天窗口')；
+Const msgInput=文件.getElementById('msgInput')；
+Const sendBtn=文件.getElementById('sendBtn')；
+
+//1.从localStorage读取历史记录（刷新不丢失）
+让 消息=[];
+尝试 {
+Const已保存=localStorage。getitem('My_chat_history')；
+如果(已保存)消息=JSON.解析(已保存)；
+}赶上(e){
+控制台.警告('读取本地存储失败'，e)；
+        }
+
+        // 2. 渲染所有消息到界面
+功能renderMessages(){
+ChatWindow.innerHTML="；
+消息.foreach(味精=>{
+Const div=文件.createElement('div')；
+div.className='消息${味精.类型}‘；
+div.textContent=味精.文本；
+ChatWindow.appendChild(div)；
+            });
+聊天窗口。scrollTop=聊天窗口。scrollHeight；//自动滚动到底部
+        }
+
+//3.保存消息到localStorage
+功能saveMessages(){
+尝试 {
+                // 只保留最近 100 条，防止 5MB 配额写满（避免出现你之前遇到的“存储空间不足”问题）
+如果 (消息.长度>100) 消息=消息.片(-100);
+localStorage.setitem('My_chat_history'，JSON。使字符串化(消息))；使字符串化//初始化消息))；
+}赶上(e){
+                警惕的('本地存储空间已满，请清理部分数据。');
+            }
+        }
+
+// 4. 发送消息
+功能SendMessage(){
+Const文本=msgInput。价值.修剪()；
+如果 (! 文本) 返回;
+
+            // 添加用户消息
+消息.推({ 类型: '用户', 文本: 文本 });
+msgInput。价值=”；
+renderMessages()；
+saveMessages()；
+
+// 模拟自动回复（演示用，你可以修改回复逻辑）
+setTimeout(()=>{
+消息.推({ 类型: '机器人', 文本: '收到你的消息啦！ ' });
+renderMessages()；
+saveMessages()；
+}, 600);
+        }
+
+sendBtn.addEventListener('单击'，SendMessage)；
+msgInput.addEventListener('按键'，(e)=>{
+如果(e.钥匙==='输入')SendMessage()；
+        });
+
+        //初始化
+renderMessages()；renderMessages()；
+    </脚本>
+</身体>
+</超文本标记语言>
